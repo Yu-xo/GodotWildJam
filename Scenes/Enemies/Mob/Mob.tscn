@@ -1,0 +1,26 @@
+[gd_scene load_steps=6 format=3 uid="uid://ct3m737n4fg4r"]
+
+[ext_resource type="Script" uid="uid://1hrtnjkdocr1" path="res://Scripts/mob.gd" id="1_ahei5"]
+[ext_resource type="Texture2D" uid="uid://ddvq3bu2ual00" path="res://icon.svg" id="2_22he4"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_22he4"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5y7ce"]
+albedo_texture = ExtResource("2_22he4")
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_5y7ce"]
+material = SubResource("StandardMaterial3D_5y7ce")
+
+[node name="Enemy" type="CharacterBody3D" groups=["enemy"]]
+script = ExtResource("1_ahei5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4859109, 0)
+shape = SubResource("CapsuleShape3D_22he4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_5y7ce")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="."]
+avoidance_enabled = true
+debug_enabled = true

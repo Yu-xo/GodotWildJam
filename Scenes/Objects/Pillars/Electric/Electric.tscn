@@ -1,0 +1,30 @@
+[gd_scene load_steps=6 format=3 uid="uid://cplmo8beui1ee"]
+
+[ext_resource type="Script" uid="uid://cha3nm6vwvil1" path="res://Scripts/electric.gd" id="1_0ae7d"]
+[ext_resource type="Texture2D" uid="uid://ddvq3bu2ual00" path="res://icon.svg" id="2_mcl33"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2si7t"]
+albedo_texture = ExtResource("2_mcl33")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_wmmxf"]
+material = SubResource("StandardMaterial3D_2si7t")
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_0ae7d"]
+
+[node name="Electric" type="Node3D"]
+script = ExtResource("1_0ae7d")
+beam_color = Color(0, 0, 0, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_wmmxf")
+
+[node name="Area3D" type="Area3D" parent="MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D/Area3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25584245, 0)
+shape = SubResource("CapsuleShape3D_0ae7d")
+
+[node name="BeamContainer" type="Node3D" parent="."]
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3908415, 0)

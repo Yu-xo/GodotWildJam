@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://bc24r7gcqik86"]
+
+[ext_resource type="Script" uid="uid://db8rsx4vp7umy" path="res://Scripts/fire.gd" id="1_xku8l"]
+[ext_resource type="PackedScene" uid="uid://dwylnb14xfgoa" path="res://Scenes/Objects/Pillars/Fire/Fire_projectile.tscn" id="2_htgv2"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_jbbf0"]
+
+[node name="Fire" type="Node3D"]
+script = ExtResource("1_xku8l")
+projectile_scene = ExtResource("2_htgv2")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.0570426, 0)
+mesh = SubResource("CylinderMesh_jbbf0")
+
+[node name="pivot" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0)
+
+[node name="projectile_spawn" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
