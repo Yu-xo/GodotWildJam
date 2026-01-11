@@ -18,7 +18,7 @@ func _physics_process(delta):
 		timer -= delta
 
 		# Apply DOT
-		if target and target.has_variable("hp"):
+		if target and target.has_method("apply_damage"):
 			target.hp -= damage_per_second * delta
 			if target.hp <= 0:
 				target.queue_free()
@@ -31,7 +31,7 @@ func _physics_process(delta):
 	var move_vec = -transform.basis.z * speed * delta
 	global_translate(move_vec)
 
-	# ----------- HIT DETECTION (RADIUS-BASED) -----------
+
 	_check_hit()
 
 func _check_hit():
@@ -51,8 +51,8 @@ func _on_hit(body):
 	stuck = true
 	target = body
 
-	# Attach projectile to target so it follows it
-	if target.is_inside_tree():
+
+	if target.is_in_group("enemy"):
 		get_parent().remove_child(self)
 		target.add_child(self)
 		global_position = target.global_position

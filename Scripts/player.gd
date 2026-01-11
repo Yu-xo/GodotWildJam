@@ -10,9 +10,7 @@ func apply_damage(amount: float):
 	if hp <= 0 and current_state != State.DEAD:
 		died()
 
-# -------------------------------
-# ORIGINAL PLAYER VARIABLES
-# -------------------------------
+
 enum State { IDLE, WALK, ATTACK, INTERACT, DEAD }
 var current_state: State = State.IDLE
 
@@ -35,7 +33,7 @@ func _physics_process(delta):
 		State.IDLE, State.WALK:
 			_process_movement(delta)
 
-# ---------------- MOVEMENT ----------------
+
 func _process_movement(delta):
 	_apply_gravity(delta)
 	_handle_jump()
@@ -68,18 +66,18 @@ func _handle_jump():
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 
-# ---------------- ANIM WRAPPER ----------------
+
 func _play(anim_name: String):
 	if anim.current_animation != anim_name:
 		anim.play(anim_name)
 
-# ---------------- ATTACK ----------------
+
 func attack():
 	if current_state == State.DEAD:
 		return
 	_set_state(State.ATTACK)
 
-func _process_attack(delta):
+func _process_attack(_delta):
 	velocity.x = 0
 	velocity.z = 0
 	move_and_slide()
@@ -88,13 +86,13 @@ func _process_attack(delta):
 	await anim.animation_finished
 	_set_state(State.IDLE)
 
-# ---------------- INTERACT ----------------
+
 func interact():
 	if current_state == State.DEAD:
 		return
 	_set_state(State.INTERACT)
 
-func _process_interact(delta):
+func _process_interact(_delta):
 	velocity.x = 0
 	velocity.z = 0
 	move_and_slide()
@@ -103,19 +101,18 @@ func _process_interact(delta):
 	await anim.animation_finished
 	_set_state(State.IDLE)
 
-# ---------------- DEAD ----------------
+
 func died():
 	_set_state(State.DEAD)
 	velocity = Vector3.ZERO
 	print("[Player] Died")
 
-func _process_dead(delta):
+func _process_dead(_delta):
 	velocity.x = 0
 	velocity.z = 0
 	move_and_slide()
 	_play("dead")
 
-# ---------------- STATE HANDLER ----------------
 func _set_state(new_state: State):
 	if current_state == new_state:
 		return

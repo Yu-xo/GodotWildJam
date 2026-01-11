@@ -4,18 +4,14 @@ extends Node3D
 @onready var beam_container := $BeamContainer
 @onready var mesh_instance_3d: MeshInstance3D = $MeshInstance3D
 
-# ---------------------------------------------------
-# CONNECTION MODES
-# ---------------------------------------------------
+
 enum ConnectionMode {
 	MODE_ALL_NEARBY,
 	MODE_CLOSEST,
 	MODE_CHAIN
 }
 
-# ---------------------------------------------------
-# EXPORTED VARIABLES
-# ---------------------------------------------------
+
 @export var connection_mode: ConnectionMode = ConnectionMode.MODE_ALL_NEARBY
 @export var max_connections := 0        # 0 = unlimited
 @export var link_range := 30.0
@@ -23,21 +19,17 @@ enum ConnectionMode {
 @export var beam_color := Color(0.3, 0.7, 1.0, 1.0)
 @export var enable_beams := true
 
-# Independent cooldown system
+
 @export var beam_active_time := 1.0       # Seconds beams stay active
 @export var beam_cooldown_time := 2.0     # Seconds beams stay off
 @export var start_charged := true         # Start active or start cooling down
 
-# ---------------------------------------------------
-# STATE
-# ---------------------------------------------------
+
 var is_beam_active := false
 var beam_timer := 0.0
 
 
-# ---------------------------------------------------
-# READY / EXIT
-# ---------------------------------------------------
+
 func _ready():
 	print("[Pillar] Ready:", name)
 	PillarManager.register_electric(self)
@@ -56,9 +48,7 @@ func _exit_tree():
 	PillarManager.unregister_electric(self)
 
 
-# ---------------------------------------------------
-# PROCESS — Handle cooldown cycle
-# ---------------------------------------------------
+
 func _process(delta):
 	beam_timer -= delta
 
@@ -72,9 +62,7 @@ func _process(delta):
 			beam_timer = beam_active_time
 
 
-# ---------------------------------------------------
-# ACTIVATE / DEACTIVATE BEAMS
-# ---------------------------------------------------
+
 func _activate_beams():
 	is_beam_active = true
 	_update_visual_charge(true)
@@ -94,9 +82,7 @@ func _deactivate_beams():
 		c.queue_free()
 
 
-# ---------------------------------------------------
-# OPTIONAL VISUAL CHARGE FEEDBACK
-# ---------------------------------------------------
+
 func _update_visual_charge(active: bool):
 	if not mesh_instance_3d:
 		return
@@ -111,9 +97,7 @@ func _update_visual_charge(active: bool):
 		mat.emission_energy = 0.2
 
 
-# ---------------------------------------------------
-# MAIN UPDATE ENTRY POINT (now respects cooldown)
-# ---------------------------------------------------
+
 func update_links(all_pillars: Array):
 	if not is_beam_active:
 		return  # Do NOT generate beams during cooldown
@@ -149,9 +133,7 @@ func update_links(all_pillars: Array):
 			_update_chain(all_pillars)
 
 
-# ---------------------------------------------------
-# MODE 1 — CONNECT TO ALL NEARBY
-# ---------------------------------------------------
+
 func _update_all_nearby(neighbors: Array):
 	print("[Pillar:", name, "] MODE_ALL_NEARBY active")
 
@@ -168,9 +150,7 @@ func _update_all_nearby(neighbors: Array):
 		_create_beam_to(other)
 
 
-# ---------------------------------------------------
-# MODE 2 — CONNECT TO CLOSEST ONLY
-# ---------------------------------------------------
+
 func _update_closest(neighbors: Array):
 	print("[Pillar:", name, "] MODE_CLOSEST active")
 
@@ -189,9 +169,7 @@ func _update_closest(neighbors: Array):
 		_create_beam_to(other)
 
 
-# ---------------------------------------------------
-# MODE 3 — CHAIN MODE
-# ---------------------------------------------------
+
 func _update_chain(all_pillars: Array):
 	print("[Pillar:", name, "] MODE_CHAIN active")
 
@@ -214,9 +192,7 @@ func _update_chain(all_pillars: Array):
 		_create_beam_to(other)
 
 
-# ---------------------------------------------------
-# BEAM CREATION
-# ---------------------------------------------------
+
 func _create_beam_to(other: Node3D):
 	print("[Pillar:", name, "] Creating beam to:", other.name)
 
@@ -274,9 +250,7 @@ func _create_beam_to(other: Node3D):
 	print("[BEAM DEBUG] Beam created. Length:", length)
 
 
-# ---------------------------------------------------
-# PLAYER / ENEMY COLLISION HANDLING
-# ---------------------------------------------------
+
 func _on_beam_body_entered(body):
 	if body.is_in_group("enemy"):
 		body.queue_free()

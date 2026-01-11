@@ -78,7 +78,7 @@ func _spawn_projectile(target):
 	projectile.damage_per_second = projectile_damage_per_second
 	projectile.duration = projectile_duration
 
-# Optional glow feedback
+
 func _set_glow(on: bool):
 	var mat := mesh_instance_3d.get_active_material(0)
 	if mat:
